@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="table">
+      <form method="post" onsubmit="return addStudent()">
+        <div class="form-group">
+          <label>Họ và tên:</label>
+          <input required="true" type="text" name="fname:" id="fullname" />
+        </div>
+        <div class="form-group">
+          <label>Email:</label>
+          <input required="true" type="email" name="email" id="emailAddress" />
+        </div>
+        <div class="form-group">
+          <label>Số điện thoại:</label>
+          <input required="true" type="text" name="phone" id="phone" />
+        </div>
+        <div class="form-group">
+          <label>Quê quán:</label>
+          <input required="true" type="text" name="add" id="address" />
+        </div>
+
+        <div id="gender" class="form-group">
+          <label for="Gender:">Giới tính:</label>
+          <input type="radio" name="Gender" />
+          <label>Nam</label>
+          <input type="radio" name="Gender" />
+          <label>Nữ</label><br />
+        </div>
+        <button>Lưu lại</button>
+      </form>
+
+      <table
+        border="1"
+        cellspacing="1"
+        cellpadding="1"
+        style="margin-top: 20px"
+      >
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Họ và tên</th>
+            <th>Email</th>
+            <th>Số điện thoại</th>
+            <th>Quê quán</th>
+            <th>Giới tính</th>
+          </tr>
+        </thead>
+        <tbody id="result"></tbody>
+      </table>
+    </div>
+
+    <script type="text/javascript">
+      var resultTag = document.getElementById("result");
+      var studentList = [];
+      var currentIndex = -1;
+
+      function addStudent() {
+        fnameTag = document.getElementById("fullname");
+        fullnameValue = fnameTag.value;
+
+        emailValue = document.getElementById("emailAddress").value;
+        phoneValue = document.getElementById("phone").value;
+        addressValue = document.getElementById("address").value;
+        genderValue = document.getElementById("gender").value;
+
+        var std = {
+          fullname: fullnameValue,
+          email: emailValue,
+          phone: phoneValue,
+          address: addressValue,
+          gender: genderValue,
+        };
+
+        if (currentIndex == -1) {
+          studentList.push(std);
+        } else {
+          studentList[currentIndex] = std;
+          currentIndex = -1;
+        }
+
+        showStudentList();
+
+        document.getElementById("fullname").value = "";
+        document.getElementById("emailAddress").value = "";
+        document.getElementById("phone").value = "";
+        document.getElementById("address").value = "";
+        document.getElementById("gender").value = "";
+
+        return false;
+      }
+
+      function showStudentList() {
+        resultTag.innerHTML = "";
+
+        for (var i = 0; i < studentList.length; i++) {
+          resultTag.innerHTML += `
+					<tr>
+						<td>${i + 1}</td>
+						<td>${studentList[i].fullname}</td>
+						<td>${studentList[i].email}</td>
+						<td>${studentList[i].phone}</td>
+                        <td>${studentList[i].address}</td>
+                        <td>${studentList[i].gender}</td>
+						<td><button onclick="editStudent(${i})">Edit</button></td>
+						<td><button onclick="deleteStudent(${i})">Delete</button></td>
+					</tr>`;
+        }
+      }
+
+      function editStudent(index) {
+        currentIndex = index;
+
+        document.getElementById("fullname").value = studentList[index].fullname;
+        document.getElementById("emailAddress").value =
+          studentList[index].email;
+        document.getElementById("phone").value = studentList[index].address;
+        document.getElementById("address").value = studentList[index].address;
+        document.getElementById("gender").value = studentList[index].address;
+      }
+
+      function deleteStudent(index) {
+        studentList.splice(index, 1);
+        showStudentList();
+      }
+    </script>
+  </body>
+</html>
